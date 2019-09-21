@@ -1,0 +1,20 @@
+.searchWrapper {
+	display: flex;
+	width: 100%;
+	flex-direction: row;
+	padding: 20px;
+	justify-content: space-between;
+}
+.searchBarSelect {
+	margin-left: 10px;
+	margin-right: 10px;
+	width: 200px;
+}
+.makePostButton {
+	margin-right: 10px;
+	z-index: 100;
+}
+.listsHeader {
+	display: flex;
+	flex-direction: row;
+}

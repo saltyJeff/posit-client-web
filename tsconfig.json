@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "node",
+        "module": "commonjs",
+        "lib": ["es6", "dom"],
+        "noImplicitAny": false,
+        "experimentalDecorators": true,
+        "inlineSourceMap": true,
+        "strictNullChecks": true,
+        "declaration": true,
+        "incremental": true,
+        "outDir": "dist",
+        "target": "es6",
+        "jsx": "react"
+    },
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.tsx"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
