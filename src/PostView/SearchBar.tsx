@@ -1,10 +1,8 @@
 import * as React from 'react'
 import { observer } from 'mobx-react'
-import { state } from '../AppState';
-import { Select, Input, Button, Affix } from 'antd'
-import { Permissions } from 'posit-server-common/dist/Permission';
-import CreatePostModal from './CreatePostModal';
+import { Select, Input } from 'antd'
 import './PostView.css'
+import { groupStore } from '../stores';
 
 @observer
 export default class SearchBar extends React.Component<{}, {
@@ -21,16 +19,16 @@ export default class SearchBar extends React.Component<{}, {
 			<div className="searchWrapper">
 				<Input 
 					placeholder="enter search terms.." 
-					value={state.searchTerms} 
-					onChange={(e) => state.searchTerms = e.target.value}
+					value={groupStore.searchTerms} 
+					onChange={(e) => groupStore.searchTerms = e.target.value}
 				/>
-				<Select defaultValue={state.viewMode} onChange={(e) => state.viewMode = e} className="searchBarSelect">
+				<Select defaultValue={groupStore.viewMode} onChange={(e) => groupStore.viewMode = e} className="searchBarSelect">
 					<Select.Option value="FILE">File</Select.Option>
 					<Select.Option value="STREAM">Stream</Select.Option>
 				</Select>
 				{
-					state.viewMode == 'STREAM' &&
-					<Select defaultValue={state.streamModeOperator} onChange={(e) => state.streamModeOperator = e} className="searchBarSelect">
+					groupStore.viewMode == 'STREAM' &&
+					<Select defaultValue={groupStore.streamModeOperator} onChange={(e) => groupStore.streamModeOperator = e} className="searchBarSelect">
 						<Select.Option value="AND">AND</Select.Option>
 						<Select.Option value="OR">OR</Select.Option>
 					</Select>

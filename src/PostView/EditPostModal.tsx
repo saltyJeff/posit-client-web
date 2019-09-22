@@ -1,8 +1,7 @@
 import * as React from 'react'
 import { observer } from 'mobx-react'
 import { Modal, List, Input, Button } from 'antd';
-import { state } from '../AppState';
-import { Preview, Post } from 'posit-server-common/dist/Entities';
+import { postStore, groupStore, PositClient } from '../stores';
 
 @observer
 export default class EditPostModal extends React.Component<{}, {
@@ -17,20 +16,20 @@ export default class EditPostModal extends React.Component<{}, {
 		}
 	}
 	componentDidUpdate () {
-		if(!!state.modalPost && this.state.lastPostId != state.modalPost.id) {
-			const expectedTagList = state.modalPost.tags.join(' ')
-			this.setState({tagList: expectedTagList, lastPostId: state.modalPost.id})
+		if(!!postStore.modalPost && this.state.lastPostId != postStore.modalPost.id) {
+			const expectedTagList = postStore.modalPost.tags.join(' ')
+			this.setState({tagList: expectedTagList, lastPostId: postStore.modalPost.id})
 		}
 	}
 	render () {
-		const post = state.modalPost
+		const post = postStore.modalPost
 		if(!post) {
 			return <></>
 		}
-		const user = state.userFromId(post.poster)
-		const preview = state.modalPreview
+		const user = groupStore.userFromId(post.poster)
+		const preview = postStore.modalPreview
 		return (
-			<Modal visible={state.postModalVisible}
+			<Modal visible={postStore.postModalVisible}
 				onCancel={this.hide}
 				onOk={this.onOk}>
 				<h1>Post Details:</h1>
@@ -54,8 +53,8 @@ export default class EditPostModal extends React.Component<{}, {
 		)
 	}
 	onOk = async () => {
-		const post = state.modalPost
-		const preview = state.modalPreview
+		const post = postStore.modalPost
+		const preview = postStore.modalPreview
 		const tags = this.state.tagList.split(' ').filter((t) => t.length > 0)
 		if(tags.toString() == post.tags.toString()) {
 			this.hide()
@@ -63,8 +62,8 @@ export default class EditPostModal extends React.Component<{}, {
 		}
 		console.log(tags, this.state.tagList)
 		
-		await state.ws.sendRpc('editTags', {
-			group: state.currentGroup.id,
+		await PositClient.sendRpc('editTags', {
+			group: groupStore.id,
 			tags: tags,
 			post: post.id,
 			operation: 'set'
@@ -73,13 +72,13 @@ export default class EditPostModal extends React.Component<{}, {
 		this.hide()
 	}
 	onDelete = async () => {
-		await state.ws.sendRpc('deletePost', {
-			group: state.currentGroup.id,
-			post: state.modalPost.id,
+		await PositClient.sendRpc('deletePost', {
+			group: groupStore.id,
+			post: postStore.modalPost.id,
 		})
 		this.hide()
 	}
 	hide = () => {
-		state.postModalVisible = false
+		postStore.postModalVisible = false
 	}
 }

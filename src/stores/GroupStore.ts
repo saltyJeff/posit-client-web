@@ -1,6 +1,7 @@
 import { observable, computed } from 'mobx'
 import { GroupData, UserData } from 'posit-core';
 import { PositClient } from './WSClient';
+import { postStore } from './PostStore';
 export type VIEW_MODES = 'FILE' | 'STREAM'
 export class GroupStore {
 	// current group page state
@@ -8,6 +9,9 @@ export class GroupStore {
 		id: -1,
 		name: '?',
 		users: []
+	}
+	@computed get id () {
+		return this.group.id
 	}
 	@observable pageNum: number = 0
 	@observable page: GroupData[] = observable.array([])
@@ -21,6 +25,10 @@ export class GroupStore {
 	}
 	setGroup(group: GroupData) {
 		this.group = group
+		this.searchTerms = ''
+
+		// reset any open modals
+		postStore.postModalVisible = false
 		this.searchTerms = ''
 	}
 	userFromId(id: number): UserData {
@@ -48,5 +56,5 @@ export class GroupStore {
 }
 const storeInst = new GroupStore()
 
-;(window as any).appStore = storeInst
+;(window as any).groupStore = storeInst
 export const groupStore = storeInst

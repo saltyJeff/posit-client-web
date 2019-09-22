@@ -9,7 +9,6 @@ import { postStore } from './PostStore';
 declare var gapi: any //GOOGLE API GLOBAL REF
 class AppStore {
 	@observable loggedIn: boolean = false
-	@observable initialized = false
 	@observable username: string
 	pageSize: number = 10
 	login(tokens: string[], url: string, username?: string) {
@@ -57,7 +56,7 @@ class AppStore {
 			console.error('Expected to find a new group but upon inspection none were found. Ignoring')
 			return
 		}
-		if(groupMutate.id == groupStore.group.id) {
+		if(groupMutate.id == groupStore.id) {
 			groupStore.group = newGroup
 		}
 		else {
@@ -75,7 +74,7 @@ class AppStore {
 		}
 	}
 	onPostMutate = async (postMutate: AlertPostMutateResult) => {
-		if(postMutate.group == groupStore.group.id) {
+		if(postMutate.group == groupStore.id) {
 			const searchTokens = groupStore.searchTokens
 			if(!!postMutate.tags) {
 				const tags = postMutate.tags

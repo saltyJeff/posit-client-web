@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { observer } from 'mobx-react'
 import { List, Button } from 'antd';
-import { state } from '../AppState';
+import { groupStore } from '../stores';
 
 @observer
 export default class FolderItem extends React.Component<{
@@ -20,7 +20,7 @@ export default class FolderItem extends React.Component<{
 		)
 	}
 	changeFolder = () => {
-		let newTerms = state.searchTerms
+		let newTerms = groupStore.searchTerms
 		const endStar = newTerms.endsWith('/*')
 		if(endStar) {
 			newTerms = newTerms.substr(0, newTerms.length - 1)
@@ -32,6 +32,6 @@ export default class FolderItem extends React.Component<{
 		if(endStar) {
 			newTerms += '*'
 		}
-		state.searchTerms = newTerms 
+		groupStore.searchTerms = newTerms 
 	}
 }

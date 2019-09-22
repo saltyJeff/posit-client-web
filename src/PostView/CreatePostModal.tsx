@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { observer } from 'mobx-react'
-import { Modal, List, Input, Button } from 'antd';
-import { state } from '../AppState';
+import { Modal, Input } from 'antd';
+import { groupStore } from '../stores';
 
 interface State {
 	userModalVisible: boolean
@@ -23,7 +23,7 @@ export default class CreatePostModal extends React.Component<{
 		}
 	}
 	componentWillReceiveProps() {
-		this.setState({tagList: state.searchTerms.replace('*', '')})
+		this.setState({tagList: groupStore.searchTerms.replace('*', '')})
 	}
 	render () {
 		return (

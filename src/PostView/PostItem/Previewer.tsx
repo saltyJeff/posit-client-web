@@ -1,7 +1,5 @@
 import * as React from 'react'
-import { observer } from 'mobx-react'
-import { Preview } from 'posit-server-common/dist/Entities';
-import { Button } from 'antd';
+import { Preview } from 'posit-core';
 
 interface Props {
 	preview: Preview

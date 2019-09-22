@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { observer } from 'mobx-react'
-import { state } from '../AppState'
 import GroupPicker from '../GroupPicker/GroupPicker';
 import GroupView from '../GroupView/GroupView';
+import { appStore } from '../stores';
 
 @observer
 export default class MainPage extends React.Component<{}, {}> {
@@ -14,7 +14,7 @@ export default class MainPage extends React.Component<{}, {}> {
 			<div>
 				<GroupPicker />
 				{
-					state.initialized && <GroupView />
+					appStore.loggedIn && <GroupView />
 				}
 			</div>
 		)

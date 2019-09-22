@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { observer } from 'mobx-react'
-import { state } from './AppState'
 import LoginPage from './LoginPage/LoginPage'
 import MainPage from './MainPage/MainPage'
+import { groupStore, appStore } from './stores';
 
 @observer
 export default class Root extends React.Component<{}, {}> {
@@ -13,7 +13,7 @@ export default class Root extends React.Component<{}, {}> {
 		return (
 			<div className="centerWrapper">
 				{
-					state.loggedIn ?
+					appStore.loggedIn ?
 					<MainPage /> :
 					<LoginPage />
 				}

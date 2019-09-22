@@ -19,7 +19,7 @@ export default class GroupView extends React.Component<{}, State> {
 	render () {
 		return (
 			<div>
-				<PageHeader title={groupStore.group.name} subTitle={groupStore.group.id}
+				<PageHeader title={groupStore.group.name} subTitle={groupStore.id}
 					extra={[
 						<Button key="detailButton" onClick={(e) => {
 							this.setState({userModalVisible: true})

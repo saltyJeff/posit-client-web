@@ -11,7 +11,8 @@
         "incremental": true,
         "outDir": "dist",
         "target": "es6",
-        "jsx": "react"
+        "jsx": "react",
+        "esModuleInterop": true
     },
     "include": [
         "src/**/*.ts",

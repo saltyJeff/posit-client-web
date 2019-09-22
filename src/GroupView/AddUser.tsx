@@ -39,7 +39,7 @@ export default class AddUser extends React.Component<{}, State> {
 	}
 	addUser = () => {
 		PositClient.sendRpc('editGroup', {
-			group: groupStore.group.id,
+			group: groupStore.id,
 			users: [{
 				email: this.state.email,
 				permissions: this.state.role

@@ -12,7 +12,11 @@ class PostStore {
 
 	entryReloader: IReactionDisposer
 	constructor () {
-		reaction(() => groupStore.group.id, this.reloadPage)
+		// await a couple MS for all the stores to be created first
+		setTimeout(() => {
+			reaction(() => groupStore.id, this.reloadPage)
+		}, 10)
+		
 	}
 	reloadPage = async () => {
 		if(!!this.entryReloader) {
@@ -55,7 +59,7 @@ class PostStore {
 		const pageNum = this.pageNum
 		this.loading = true
 		const postRes = await PositClient.sendRpc('getPosts', {
-			group: groupStore.group.id,
+			group: groupStore.id,
 			tags: searchTokens,
 			page: pageNum + 1,
 			operation: groupStore.searchOp
@@ -89,5 +93,5 @@ class PostStore {
 } 
 const storeInst = new PostStore()
 
-;(window as any).appStore = storeInst
+;(window as any).postStore = storeInst
 export const postStore = storeInst

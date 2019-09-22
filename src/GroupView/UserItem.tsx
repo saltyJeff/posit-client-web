@@ -34,7 +34,7 @@ export default class UserItem extends React.Component<{
 	}
 	changeRole = () => {
 		PositClient.sendRpc('editGroup', {
-			group: groupStore.group.id,
+			group: groupStore.id,
 			users: [{
 				email: this.props.user.email,
 				permissions: (this.state.newPerm as any)

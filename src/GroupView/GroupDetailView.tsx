@@ -44,7 +44,7 @@ export default class UserView extends React.Component<{
 	changeName = () => {
 		const newName = this.state.newName
 		PositClient.sendRpc('editGroup', {
-			'group': groupStore.group.id,
+			'group': groupStore.id,
 			'name': newName
 		})
 	}

@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { observer } from 'mobx-react'
 import SearchBar from './SearchBar';
-import { state } from '../AppState';
 import FileView from './FileView';
 import EditPostModal from './EditPostModal';
 

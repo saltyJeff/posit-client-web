@@ -2,13 +2,10 @@ import * as React from 'react'
 import { observer } from 'mobx-react'
 import { List, Button, Spin, Affix, Divider } from 'antd';
 import FolderItem from './FolderItem';
-import { autorun, IReactionDisposer, entries } from 'mobx';
-import { state } from '../AppState';
 import InfiniteScroll from 'react-infinite-scroller'
-import { Post, Preview } from 'posit-server-common/dist/Entities';
 import PostItem from './PostItem/PostItem';
-import EditPostModal from './EditPostModal';
 import CreatePostModal from './CreatePostModal';
+import { postStore, PositClient, groupStore } from '../stores';
 
 @observer
 export default class FileView extends React.Component<{}, {
@@ -23,14 +20,14 @@ export default class FileView extends React.Component<{}, {
 	render () {
 		let switched = false
 		let firstElem = true
-		const viewMoreId = state.viewMorePost
+		const viewMoreId = postStore.viewMoreId
 		return (
 			<div>
 				<InfiniteScroll
 					initialLoad={false}
 					pageStart={0}
-					loadMore={state.loadMore}
-					hasMore={!state.loading && state.hasMore}
+					loadMore={postStore.loadMore}
+					hasMore={!postStore.loading && postStore.hasMore}
 					useWindow={true}
 				>
 					<List
@@ -39,7 +36,7 @@ export default class FileView extends React.Component<{}, {
 							this.listHeader()
 						}
 						bordered
-						dataSource={state.entries}
+						dataSource={postStore.page}
 						grid={{
 							sm: 1,
 							lg: 2,
@@ -69,7 +66,7 @@ export default class FileView extends React.Component<{}, {
 						}}
 						itemLayout="vertical"
 					>
-						{state.loading && state.hasMore && (
+						{postStore.loading && postStore.hasMore && (
 							<div className="demo-loading-container">
 								<Spin />
 							</div>
@@ -84,34 +81,43 @@ export default class FileView extends React.Component<{}, {
 		)
 	}
 	createPost = async (url: string, tags: string[]) => {
-		await state.ws.sendRpc('makePost', {
-			group: state.currentGroup.id,
+		await PositClient.sendRpc('makePost', {
+			group: groupStore.id,
 			url: url,
 			tags: tags.length > 0 ? tags : undefined
 		})
 		this.setState({createPostVisible: false})
 	}
 	goUp = () => {
-		if(state.searchTerms === '') {
+		if(groupStore.searchTerms === '') {
 			return
 		}
-		const termsSplit = state.searchTerms.split('/')
+		const termsSplit = groupStore.searchTerms.split('/')
 		termsSplit.splice(termsSplit.length - 2, 2)
 		if(termsSplit.length == 0) {
-			state.searchTerms = ''
+			groupStore.searchTerms = ''
 			return
 		}
 		const newTerms = termsSplit.join('/')+'/'
-		state.searchTerms = newTerms
+		groupStore.searchTerms = newTerms
 	}
 	listHeader = (): JSX.Element => {
 		return <Affix offsetTop={10}>
 			<div className="listsHeader">
 				{
-					state.viewMode == 'FILE' && <Button type="primary" onClick={this.goUp} disabled={state.searchTerms == ''}>{state.searchTerms === '' ? 'Root' : 'cd ..'}</Button>	
+					groupStore.viewMode == 'FILE' && 
+					<Button type="primary" 
+						onClick={this.goUp} 
+						disabled={groupStore.searchTerms == ''}>{groupStore.searchTerms === '' ? 'Root' : 'cd ..'}
+					</Button>	
 				}
 				<span style={{flex: 1}}></span>
-				<Button onClick={() => this.setState({createPostVisible: true})} type="primary" className="makePostButton">Create Post</Button>
+				<Button 
+					onClick={() => this.setState({createPostVisible: true})} 
+					type="primary" 
+					className="makePostButton">
+						Create Post
+				</Button>
 			</div>
 		</Affix>
 	}

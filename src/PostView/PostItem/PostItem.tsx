@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { observer } from 'mobx-react'
 import { List, Card, Button } from 'antd';
-import { Post, Preview } from 'posit-server-common/dist/Entities';
-import { state } from '../../AppState'
 import Previewer from './Previewer';
 import './PostItem.css'
+import { Post, Preview } from 'posit-core';
+import { postStore, groupStore, PositClient } from '../../stores';
 
 interface Props {
 	post: Post
@@ -40,7 +40,7 @@ export default class PostItem extends React.Component<Props, {
 			<Card
 				actions={[
 					<Button onClick={this.handleViewMore}>View More</Button>,
-					<Button onClick={() => state.openPostModal(this.props.post, this.state.preview)}>Details</Button>
+					<Button onClick={() => postStore.openPostModal(this.props.post, this.state.preview)}>Details</Button>
 				]}
 				key={this.props.post.id+''}
 				className="postItem"
@@ -60,16 +60,16 @@ export default class PostItem extends React.Component<Props, {
 		)
 	}
 	handleViewMore = () => {
-		if(state.viewMorePost == this.props.post.id) {
-			state.viewMorePost = -1
+		if(postStore.viewMoreId == this.props.post.id) {
+			postStore.viewMoreId = -1
 		}
 		else {
-			state.viewMorePost = this.props.post.id
+			postStore.viewMoreId = this.props.post.id
 		}
 	}
 	cardTitle = () => {
 		const postDate = new Date(this.props.post.postDate*1000)
-		return `${state.userFromId(this.props.post.poster).name} - ${postDate.toDateString()} (${this.props.post.id})`
+		return `${groupStore.userFromId(this.props.post.poster).name} - ${postDate.toDateString()} (${this.props.post.id})`
 	}
 	link = (): JSX.Element => {
 		return <a target='_blank' href={this.props.post.url} className="postLink">{this.props.post.url}</a>
@@ -102,13 +102,13 @@ export default class PostItem extends React.Component<Props, {
 	reloadPreview = () => {
 		if(this.props.post.hasPreview) {
 			console.log('reloading preview')
-			state.ws.sendRpc('getPreview', {
-				group: state.currentGroup.id,
+			PositClient.sendRpc('getPreview', {
+				group: groupStore.id,
 				post: this.props.post.id
 			})
 			.then((res) => {
-				if(Object.keys(res.result).length > 0) {
-					this.setState({preview: res.result})
+				if(Object.keys(res).length > 0) {
+					this.setState({preview: res})
 				}
 				else {
 					this.setState({preview: undefined})
