@@ -4746,8 +4746,8 @@ pn@^1.1.0:
   integrity sha512-2qHaIQr2VLRFoxe2nASzsV6ef4yOOH+Fi9FBOVH6cqeSgUnoyySPZkxzLuzd+RYOQTRpROA0ztTMqxROKSb/nA==
 
 "posit-core@https://github.com/saltyJeff/posit-core.git":
-  version "1.0.1"
-  resolved "https://github.com/saltyJeff/posit-core.git#0fc2d91c4671e282dc0a1b1991306ec84ce4b4b4"
+  version "1.2.0"
+  resolved "https://github.com/saltyJeff/posit-core.git#bf64afea39e9cd65c7fa85b888c7a08b0b2f4070"
   dependencies:
     jsonrpc-codegen saltyJeff/jsonrpc-codegen
 

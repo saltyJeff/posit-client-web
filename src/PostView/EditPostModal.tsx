@@ -66,7 +66,7 @@ export default class EditPostModal extends React.Component<{}, {
 			group: groupStore.id,
 			tags: tags,
 			post: post.id,
-			operation: 'set'
+			operation: 'SET'
 		})
 
 		this.hide()
