@@ -15,7 +15,10 @@ export class WSClient implements PC {
 		if(serverUrl.startsWith(':')) {
 			serverUrl = serverUrl.substr(1)
 		}
-		if(!isNaN(parseInt(serverUrl))) {
+		else if(!serverUrl) {
+			serverUrl = window.location.hostname
+		}
+		else if(!isNaN(parseInt(serverUrl))) {
 			serverUrl = window.location.hostname+':'+serverUrl
 		}
 		const signinUrl = `ws://${serverUrl}`

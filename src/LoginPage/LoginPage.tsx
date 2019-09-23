@@ -30,7 +30,7 @@ export default class LoginPage extends React.Component<{}, {
 				<p>Select a server (or use the default)</p>
 				<Input 
 					placeholder="server" 
-					defaultValue=":2468" 
+					defaultValue="" 
 					value={this.state.server} 
 					onChange={(e) => this.setState({server: e.target.value})} />
 				<h1>WARNING: DATA IS NOT ENCRYPTED</h1>
