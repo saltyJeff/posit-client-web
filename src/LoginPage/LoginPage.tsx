@@ -12,7 +12,7 @@ export default class LoginPage extends React.Component<{}, {
 	constructor(props) {
 		super(props)
 		this.state = {
-			server: ':2468'
+			server: ''
 		}
 		if(!(window as any).onSignIn) {
 			;(window as any).onSignIn = (googleUser) => {
