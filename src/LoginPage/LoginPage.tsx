@@ -12,7 +12,7 @@ export default class LoginPage extends React.Component<{}, {
 	constructor(props) {
 		super(props)
 		this.state = {
-			server: ''
+			server: 'ec2-18-218-111-108.us-east-2.compute.amazonaws.com'
 		}
 		if(!(window as any).onSignIn) {
 			;(window as any).onSignIn = (googleUser) => {
@@ -30,7 +30,6 @@ export default class LoginPage extends React.Component<{}, {
 				<p>Select a server (or use the default)</p>
 				<Input 
 					placeholder="server" 
-					defaultValue="" 
 					value={this.state.server} 
 					onChange={(e) => this.setState({server: e.target.value})} />
 				<h1>WARNING: DATA IS NOT ENCRYPTED</h1>

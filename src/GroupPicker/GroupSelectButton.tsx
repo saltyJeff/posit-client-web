@@ -12,12 +12,13 @@ export default class GroupSelectButton extends React.Component<Props, {}> {
 	}
 	render () {
 		return (
-			<>
+			<div>
 				<a onClick={this.setGroup} href={'#'+this.props.group.id} className="groupLink">{this.props.group.name} ({this.props.group.id})</a>
-			</>
+			</div>
 		)
 	}
 	setGroup = () => {
 		groupStore.setGroup(this.props.group)
+		groupStore.pickerVisible = false
 	}
 }

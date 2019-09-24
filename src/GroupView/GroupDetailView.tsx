@@ -19,6 +19,11 @@ export default class UserView extends React.Component<{
 			newName: groupStore.group.name
 		}
 	}
+	componentDidUpdate () {
+		if(this.state.newName != groupStore.group.name) {
+			this.setState({newName: groupStore.group.name})
+		}
+	}
 	render () {
 		return (
 			<Modal visible={this.props.visible}

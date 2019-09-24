@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 import * as React from 'react'
 import GroupSelectButton from "./GroupSelectButton";
-import { InputNumber, Button } from "antd";
+import { InputNumber, Button, Drawer } from "antd";
 import CreateGroupModal from "./CreateGroupModal";
 import './GroupPicker.css'
 import { appStore, groupStore, PositClient } from "../stores";
@@ -20,7 +20,18 @@ export default class GroupPicker extends React.Component<{}, State> {
 	render () {
 		return (
 			<div>
-				<div>
+				<Drawer
+					title={
+						<>
+							<p>{appStore.username} <Button type="link" onClick={appStore.signout}>SIGNOUT</Button></p>
+							<Button onClick={() => this.setState({createGroupVisible: true})}>Create Group</Button> 
+						</>
+					}
+					placement="right"
+					closable={true}
+					visible={groupStore.pickerVisible}
+					onClose={() => groupStore.pickerVisible = false}
+				>
 					Page: <InputNumber
 						value={groupStore.pageNum} 
 						onChange={(e) => {
@@ -29,16 +40,14 @@ export default class GroupPicker extends React.Component<{}, State> {
 						}}
 						min={0}
 						step={1}/>
-					<Button onClick={() => this.setState({createGroupVisible: true})}>Create Group</Button> 
-					<p style={{display: 'inline-block', marginLeft: 10}}>{appStore.username} - <Button type="link" onClick={appStore.signout}>SIGNOUT</Button></p>
-				</div>
-				<div className="groupWrapper">
-				{
-					groupStore.page.map((v) => {
-						return (<GroupSelectButton key={v.id+''} group={v}/>)
-					})
-				}
-				</div>
+					<div className="groupWrapper">
+					{
+						groupStore.page.map((v) => {
+							return (<GroupSelectButton key={v.id+''} group={v}/>)
+						})
+					}
+					</div>
+				</Drawer>
 				<CreateGroupModal
 					visible={this.state.createGroupVisible}
 					onOk={this.createGroup}

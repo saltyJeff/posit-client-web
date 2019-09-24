@@ -16,7 +16,10 @@
     "@types/react": "^16.9.2",
     "@types/react-dom": "^16.9.0",
     "@types/react-infinite-scroller": "^1.2.1",
+    "babel-plugin-import": "^1.12.2",
     "jsonrpc-codegen": "saltyJeff/jsonrpc-codegen",
+    "less": "^2.7.3",
+    "less-loader": "^5.0.0",
     "parcel-bundler": "^1.12.3",
     "typescript": "^3.5.2"
   },
@@ -24,6 +27,7 @@
     "antd": "^3.20.1",
     "mobx": "^5.10.1",
     "mobx-react": "^6.1.1",
+    "parcel-plugin-bundle-visualiser": "^1.2.0",
     "parcel-plugin-typescript": "^1.0.0",
     "posit-core": "https://github.com/saltyJeff/posit-core.git",
     "react": "^16.8.6",

@@ -23,7 +23,10 @@ export default class GroupView extends React.Component<{}, State> {
 					extra={[
 						<Button key="detailButton" onClick={(e) => {
 							this.setState({userModalVisible: true})
-						}}>Details</Button>
+						}}>Details</Button>,
+						<Button key="groupButton" type="primary" onClick={(e) => {
+							groupStore.pickerVisible = true
+						}}>Groups</Button>
 					]}/>
 				<GroupDetailView
 					visible={this.state.userModalVisible}

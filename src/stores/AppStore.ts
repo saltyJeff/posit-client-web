@@ -1,6 +1,5 @@
-import { observable, isObservable, IReactionDisposer, autorun, computed } from 'mobx'
-import { WSClient, PositClient } from './WSClient'
-import { GroupData, UserData, Post, Preview } from 'posit-core'
+import { observable } from 'mobx'
+import { PositClient } from './WSClient'
 import { notification } from 'antd';
 import { groupStore } from './GroupStore';
 import { AlertGroupMutateResult, AlertPostMutateResult } from 'posit-core/dist/apiDefinitions/Api/ApiResults';
@@ -19,7 +18,7 @@ class AppStore {
 			socket.addEventListener('open', this.onLogin)
 			socket.addEventListener('close', this.onLogout)
 			
-			PositClient.setListener(0, this.onGroupMutate)
+			PositClient.setListener(0, groupStore.onGroupMutate)
 			PositClient.setListener(1, this.onPostMutate)
 			PositClient.onError = (err) => {
 				notification.error({
@@ -45,33 +44,6 @@ class AppStore {
 	onLogout = async () => {
 		this.loggedIn = false
 		console.log('logged out')
-	}
-	onGroupMutate = async (groupMutate: AlertGroupMutateResult) => {
-		const newGroupRpc = await PositClient.sendRpc('getGroup', {
-			id: groupMutate.id
-		})
-		// handle error when your notification is group delete
-		const newGroup = newGroupRpc.group
-		if(!newGroup) {
-			console.error('Expected to find a new group but upon inspection none were found. Ignoring')
-			return
-		}
-		if(groupMutate.id == groupStore.id) {
-			groupStore.group = newGroup
-		}
-		else {
-			const key = Date.now()+''
-			notification.info({
-				duration: 0,
-				key: key,
-				message: `${newGroup.name} (${groupMutate.action})`,
-				description: `${groupMutate.user} has ${groupMutate.action} in group ${newGroup.name} with\n${newGroup.users.map((u) => u.name).toString()}`,
-				onClick: () => {
-					groupStore.setGroup(newGroup)
-					notification.close(key)
-				}
-			})
-		}
 	}
 	onPostMutate = async (postMutate: AlertPostMutateResult) => {
 		if(postMutate.group == groupStore.id) {
